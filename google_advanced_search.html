@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Google Advanced Search</title>
@@ -19,6 +19,7 @@
             position: absolute;
             left: 460px;
         }
+
             .advancedbutton:hover {
                 background-color: lightblue;
                 transition: 0.3s;
@@ -26,75 +27,76 @@
                 outline-style: solid;
                 box-shadow: 0 0 0 1px #6495ED;
             }
-        tr.spaceUnder>td{
+
+        tr.spaceUnder > td {
             padding-bottom: 1em;
         }
     </style>
 </head>
-<body>
-    <p style="text-align:right; margin-right:30px;">
+<body style="font-family: monospace;">
+    <p style="text-align: right; padding-right: 5%; font-size: 24px ">
         <a href="index.html">Google Search</a>
     </p>
 
-    <p style="color:red; margin-left:30px; font-size:28px;position:relative;left:30px;">
+    <p style="color:red; margin-left:30px; font-size:32px;position:relative;left:30px;">
         <b>Advanced Search</b>
     </p><hr><br>
-            <div style="position:relative; left:60px;">
-                <p style="font-size:24px">
-                    <b>Find pages with...</b>
-                </p>
+    <div style="position:relative; left:60px;">
+        <p style="font-size:24px">
+            <b>Find pages with...</b>
+        </p>
 
-                <form action="https://www.google.co.in/search">
-                    <table>
-                        <tr class="spaceUnder">
-                            <td>
-                                all these words:
-                            </td>
-                            <td>
-                                <input type="text" name="q" size=60 >
-                            </td>
-                        </tr>
-                        <tr class="spaceUnder">
-                            <td>
-                                this exact word or phrase:
-                            </td>
-                            <td>
-                                <input type="text" name="as_epq" size=60>
-                            </td>
-                        </tr>
-                        <tr class="spaceUnder">
-                            <td>
-                                any of these words:
-                            </td>
-                            <td>
-                                <input type="text" name="as_oq" size=60>
-                            </td>
-                        </tr>
-                        <tr class="spaceUnder">
-                            <td>
-                                none of these words:
-                            </td>
-                            <td>
-                                <input type="text" name="as_eq" size=60>
-                            </td>
-                        </tr>
-                        <tr class="spaceUnder">
-                            <td>
-                                numbers ranging from:
-                            </td>
-                            <td>
-                                <input type="text" name="as_nlo" size=26>
-                                to
-                                <input type="text" name="as_nhi" size=26>
-                            </td>
-                        </tr>
-                    </table>
-                    <br>
-                    <button class="advancedbutton">Advanced Search</button>
-                    <script>
-                        <input type="submit" value="Advanced Search">
-                    </script>
-                </form>
-            </div>
+        <form action="https://www.google.co.in/search">
+            <table>
+                <tr class="spaceUnder">
+                    <td>
+                        all these words:
+                    </td>
+                    <td>
+                        <input type="text" name="q" size=60>
+                    </td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>
+                        this exact word or phrase:
+                    </td>
+                    <td>
+                        <input type="text" name="as_epq" size=60>
+                    </td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>
+                        any of these words:
+                    </td>
+                    <td>
+                        <input type="text" name="as_oq" size=60>
+                    </td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>
+                        none of these words:
+                    </td>
+                    <td>
+                        <input type="text" name="as_eq" size=60>
+                    </td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>
+                        numbers ranging from:
+                    </td>
+                    <td>
+                        <input type="text" name="as_nlo" size=26>
+                        to
+                        <input type="text" name="as_nhi" size=26>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <button class="advancedbutton">Advanced Search</button>
+            <script>
+                <input type="submit" value="Advanced Search">
+            </script>
+        </form>
+    </div>
 </body>
 </html>
