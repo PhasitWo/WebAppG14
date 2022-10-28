@@ -1,7 +1,8 @@
+{% load static %} 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="index_style.css">
+<link rel="stylesheet" href="{% static 'ordering/index_style.css'%}">
 <title>Online Food Ordering</title>
 </head>
 <body>
@@ -19,7 +20,23 @@
             </div>
         </div>
         <div class="content">
-            Order
+            <h1> hello</h1>
+            <div class="table">
+                <table> 
+                    <tr>
+                        <th>head 1</th>
+                        <th>head 2</th>
+                        <th>head 3</th>
+                    </tr>
+                    {% for item in items %}
+                        <tr>
+                        {% for i in item %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                     </tr>
+                    {% endfor %}
+                </table>
+            <div/>
         </div>
     </div>
 </body>
