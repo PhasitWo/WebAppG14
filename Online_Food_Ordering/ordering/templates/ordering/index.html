@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="{% static 'ordering/index_style.css'%}">
+<link href="/static/ordering/index_style.css?{% now 'U' %}" rel="stylesheet">
 <title>Online Food Ordering</title>
 </head>
 <body>
@@ -28,15 +28,15 @@
                         <th>head 2</th>
                         <th>head 3</th>
                     </tr>
-                    {% for item in items %}
+                    {% for food in foods %}
                         <tr>
-                        {% for i in item %}
-                        <td>{{i}}</td>
-                        {% endfor %}
-                     </tr>
+                            <td>{{food.name}}</td>
+                            <td class="img-col"> <img src="{{MEDIA_URL}}{{food.image}}" style="width:200px;height:200px;"> </td>
+                            <td>{{food.price}}</td>
+                        </tr>
                     {% endfor %}
                 </table>
-            <div/>
+            </div>
         </div>
     </div>
 </body>
