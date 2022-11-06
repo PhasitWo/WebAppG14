@@ -6,6 +6,13 @@
 <title>Online Food Ordering</title>
 </head>
 <body>
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
     <div class="container">
         <div class="header">
             <h1>username</h1>
@@ -27,12 +34,23 @@
                         <th>head 1</th>
                         <th>head 2</th>
                         <th>head 3</th>
+                        <th>head 4</th>
                     </tr>
-                    {% for food in foods %}
+                    {% for food in data %}
                         <tr>
                             <td>{{food.name}}</td>
                             <td class="img-col"> <img src="{{MEDIA_URL}}{{food.image}}" style="width:200px;height:200px;"> </td>
                             <td>{{food.price}}</td>
+                            <td class="form-col">
+                                <form action="{%url 'ordering:add'%}" method="post">
+                                    {%csrf_token%}
+                                    <input type="hidden" name="food_name" value="{{food.name}}">
+                                    <input type="hidden" name="food_img" value="{{food.image}}">
+                                    <input type="hidden" name="food_price" value="{{food.price}}">
+                                    <input type="number" name="food_quantity" min="1">
+                                    <input type="submit" value="add">
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>
