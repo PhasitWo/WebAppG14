@@ -4,10 +4,11 @@ from django.urls import reverse
 from django.contrib import messages
 from .models import Food
 
-# test cart (change to session later)
 food_data = Food.objects.all()
 
 def index(request):
+    # if not request.user.is_authenticated:
+    #     redirect to login page
     if "cart_data" not in request.session:
         request.session["cart_data"] = []
     return render(request, "ordering/index.html", {"data": food_data})
