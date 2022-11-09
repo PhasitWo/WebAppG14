@@ -1,0 +1,33 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="/static/ordering/layout_style.css?{% now 'U' %}" rel="stylesheet">
+    <title>Online Food Ordering</title>
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        <div class="header">
+            <h1>{{user.username}}</h1>
+            <a id="logout" href="#">logout</a>
+            <div class="sidebar"> 
+                <ul class="nav">
+                    <li><a href="{%url 'ordering:index'%}"><p>Store</p></a></li>
+                    <li><a href="{%url 'ordering:cart'%}"><p>Cart</p></a></li>
+                    <li><a href="#"><p>test3</p></a></li>
+                    <li><a href="#"><p>test4</p></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

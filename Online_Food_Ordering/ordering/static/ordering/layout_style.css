@@ -1,0 +1,46 @@
+*{
+    font-family: monospace;
+}
+
+.header{
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    background: black;
+    color: white;
+    padding-top: 10px;
+    top: 0;
+    left: 0;
+}
+.header h1{
+    padding-left: 10px;
+}
+
+#logout{
+    padding-left: 40px;
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar{
+    background: red;
+    height: 100%;
+}
+
+.nav {
+    padding-top: 10px;
+    list-style: none;
+    position: relative;
+}
+
+.nav li a{
+    color: white;
+    text-decoration: none;
+}
+
+.content {
+    padding-left: 200px;
+    color: rgb(0, 0, 0);
+    width: 80%;
+    height: 100%;
+}

@@ -1,61 +1,33 @@
+{% extends "ordering/layout.html" %}
 {% load static %} 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<link href="/static/ordering/index_style.css?{% now 'U' %}" rel="stylesheet">
-<title>Online Food Ordering</title>
-</head>
-<body>
-    {% if messages %}
-        {% for message in messages %}
-         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-
-        {% endfor %}
-
-    {% endif %}
-    <div class="container">
-        <div class="header">
-            <h1>username</h1>
-            <a id="logout" href="#">logout</a>
-            <div class="sidebar"> 
-                <ul class="nav">
-                    <li><a href="#"><p>test1</p></a></li>
-                    <li><a href="#"><p>test2</p></a></li>
-                    <li><a href="#"><p>test3</p></a></li>
-                    <li><a href="#"><p>test4</p></a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="content">
-            <h1> hello</h1>
-            <div class="table">
-                <table> 
-                    <tr>
-                        <th>head 1</th>
-                        <th>head 2</th>
-                        <th>head 3</th>
-                        <th>head 4</th>
-                    </tr>
-                    {% for food in data %}
-                        <tr>
-                            <td>{{food.name}}</td>
-                            <td class="img-col"> <img src="{{MEDIA_URL}}{{food.image}}" style="width:200px;height:200px;"> </td>
-                            <td>{{food.price}}</td>
-                            <td class="form-col">
-                                <form action="{%url 'ordering:add'%}" method="post">
-                                    {%csrf_token%}
-                                    <input type="hidden" name="food_name" value="{{food.name}}">
-                                    <input type="hidden" name="food_img" value="{{food.image}}">
-                                    <input type="hidden" name="food_price" value="{{food.price}}">
-                                    <input type="number" name="food_quantity" min="1">
-                                    <input type="submit" value="add">
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
+{% block body %}
+    <link href="/static/ordering/index_style.css?{% now 'U' %}" rel="stylesheet">
+    <h1> hello </h1>
+    <div class="table">
+        <table> 
+            <tr>
+                <th>head 1</th>
+                <th>head 2</th>
+                <th>head 3</th>
+                <th>head 4</th>
+            </tr>
+            {% for food in data %}
+                <tr>
+                    <td>{{food.name}}</td>
+                    <td class="img-col"> <img src="{{MEDIA_URL}}{{food.image}}" style="width:200px;height:200px;"> </td>
+                    <td>{{food.price}}</td>
+                    <td class="form-col">
+                        <form action="{%url 'ordering:add'%}" method="post">
+                            {%csrf_token%}
+                            <input type="hidden" name="food_name" value="{{food.name}}">
+                            <input type="hidden" name="food_img" value="{{food.image}}">
+                            <input type="hidden" name="food_price" value="{{food.price}}">
+                            <input type="number" name="food_quantity" min="1" required="required" placeholder="quantity">
+                            <input type="submit" value="add">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
-</body>
-</html>
+{% endblock %}

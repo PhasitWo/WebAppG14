@@ -5,16 +5,18 @@ from django.contrib import messages
 from .models import Food
 
 # test cart (change to session later)
-cart = [] 
-
-data = Food.objects.all()
+food_data = Food.objects.all()
 
 def index(request):
-    return render(request, "ordering/index.html", {"data": data})
+    if "cart_data" not in request.session:
+        request.session["cart_data"] = []
+    return render(request, "ordering/index.html", {"data": food_data})
+
+def cart(request):
+    return render(request, "ordering/cart.html", {"data": request.session["cart_data"]})
 
 def add(request):
     if request.method == "POST":
-        # some process here
-        #....
+        request.session["cart_data"] += [request.POST["food_name"]] #test
         messages.success(request, 'Item has been added to the cart.')
-    return HttpResponseRedirect(reverse("ordering:index"))
+    return HttpResponseRedirect(reverse("ordering:cart"))
