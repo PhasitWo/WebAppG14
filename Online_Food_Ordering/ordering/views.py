@@ -21,3 +21,6 @@ def add(request):
         request.session["cart_data"] += [request.POST["food_name"]] #test
         messages.success(request, 'Item has been added to the cart.')
     return HttpResponseRedirect(reverse("ordering:cart"))
+
+def login(request):
+    return render(request, "ordering/login.html")
