@@ -13,8 +13,12 @@
     {% endif %}
     <div class="container">
         <div class="header">
-            <h1>{{user.username}}</h1>
-            <a id="logout" href="#">logout</a>
+            <h1>{{user}}</h1>
+            {% if user != "guest" %}
+                <a id="logout" href="/ordering/logout">logout</a>
+            {% else %}
+                <a id="login" href="/ordering/login">login</a>
+            {% endif %}
             <div class="sidebar"> 
                 <ul class="nav">
                     <li><a href="{%url 'ordering:index'%}"><p>Store</p></a></li>

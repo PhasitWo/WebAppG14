@@ -22,6 +22,12 @@
     text-decoration: none;
 }
 
+#login{
+    padding-left: 40px;
+    color: white;
+    text-decoration: none;
+}
+
 .sidebar{
     background: red;
     height: 100%;
