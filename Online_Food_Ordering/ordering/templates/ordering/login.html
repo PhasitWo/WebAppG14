@@ -11,15 +11,15 @@
     <title>login</title>
 </head>
 
-<body style="background-color: blue;">
+<body style="background-color: red;">
     <form action="login" method="post">
         {% csrf_token %}
         <div class="login-content">
             <h1>Login</h1>
             <p>username</p>
-            <input type="text" name="username">
+            <input type="text" name="username" required>
             <p>password</p>
-            <input type="password" name="password">
+            <input type="password" name="password" required>
             <br>
             <br>
             <input type="submit">

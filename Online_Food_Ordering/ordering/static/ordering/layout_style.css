@@ -28,6 +28,12 @@
     text-decoration: none;
 }
 
+#register{
+    padding-left: 20px;
+    color: white;
+    text-decoration: none;
+}
+
 .sidebar{
     background: red;
     height: 100%;

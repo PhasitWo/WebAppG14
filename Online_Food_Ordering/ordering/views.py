@@ -112,3 +112,20 @@ def logout(request):
     request.session.pop("user_id")
     request.session.pop("cart_data")
     return HttpResponseRedirect("/")
+
+def register(request):
+    if request.method == "POST":
+        try:
+            user_data = User.objects.get(username = request.POST["reguser"])
+        except:
+            user_data = None
+        if user_data:
+            messages.error(request,"ซ้ำ")
+        else:
+            if request.POST['reguser'] == 'guest':
+                messages.error(request,"ซ้ำ")
+            else:
+                reg = User.objects.create(username = request.POST['reguser'],password = request.POST['regpassword'])
+                messages.success(request,"สมัครสำเร็จ")
+        return HttpResponseRedirect("/")
+    return render(request, "ordering/register.html")

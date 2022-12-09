@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/ordering/register_style.css?{% now 'U' %}" rel="stylesheet">
+    <title>Register</title>
+</head>
+
+<body style="background-color:red ;">
+    <form action="register" method="post">
+        {% csrf_token %}
+        <div class="register-content">
+            <h1>Register</h1>
+            <p>username</p>
+            <input type="text" name="reguser" required>
+            <p>password</p>
+            <input type="password" name="regpassword" id="password" required>
+            <br>
+            <p>confirm password</p>
+            <input type="password" id="confirmPassword" required>
+            <br>
+            <br>
+            <input type="submit" id="submitBtn">
+        </div>
+    </form>
+    
+</body>
+<script>
+    password = document.getElementById("password")
+    confirmPassword = document.getElementById("confirmPassword")
+    submitBtn = document.getElementById("submitBtn")
+
+    submitBtn.addEventListener("click",(event) => {
+        console.log(password);
+        if(password.value !== confirmPassword.value){
+            alert("password ไม่ตรง")
+            event.preventDefault()
+        } 
+    })
+</script>
+</html>
