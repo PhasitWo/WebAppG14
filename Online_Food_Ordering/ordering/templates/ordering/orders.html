@@ -1,0 +1,21 @@
+{% extends "ordering/layout.html" %}
+{% load static %} 
+{% block body %}
+    <link href="/static/ordering/orders_style.css?{% now 'U' %}" rel="stylesheet">
+    <h1> Orders </h1>
+    {% for order in data %}
+        <h2> #{{order.0}}</h2>
+        <h3> {{order.1}} </h3>
+            <ol>
+                {% for item in order.3 %}
+                    <li>{{item.0}} {{item.1}} {{item.2}} </li>
+                {% endfor %}
+                <li>Total = {{order.2}}฿</li>
+            </ol>
+        <form action="{%url 'ordering:delete_order'%}" method="post">
+            {%csrf_token%}
+            <input type="hidden" name="order_id" value="{{order.0}}">
+            <input type="submit" value="delete">
+        </form>
+    {% endfor %}
+{% endblock %}

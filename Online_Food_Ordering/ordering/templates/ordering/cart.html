@@ -6,14 +6,14 @@
         <ol>
             {% for item in data %}
                 <li>{{item.1}} {{item.2}} {{item.3}} 
-                    <form action="{%url 'ordering:delete'%}" method="post"  style="display: inline;">{%csrf_token%}
+                    <form action="{%url 'ordering:delete_item'%}" method="post"  style="display: inline;">{%csrf_token%}
                         <input type="hidden" name="food_id" value="{{item.0}}">
                         <input type="submit" value="delete">
                     </form>
                 </li>
             {% endfor %}
+            <li>Total = {{total}}฿</li>
         </ol>
-<p>total = {{total}}฿</p>
 <a href="{%url 'ordering:clear_cart'%}">clear cart</a>
 <p><form action="{%url 'ordering:confirm_order'%}" method="post">{%csrf_token%}
     <input type="submit" value="Confirm">

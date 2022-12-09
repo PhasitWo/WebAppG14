@@ -16,28 +16,37 @@ def add(request):
         messages.error(request, 'Please, login.')
         return HttpResponseRedirect("/")
     if request.method == "POST":
-        request.session["cart_data"] += [(request.POST["food_id"], request.POST["food_name"], request.POST['food_quantity'], request.POST['food_price'])]
+        # check if that item already exists in the cart
+        added = False
+        cart_data = request.session["cart_data"]
+        for item in cart_data:
+            if item[0] == request.POST["food_id"]:
+                item[2] += int(request.POST["food_quantity"])
+                request.session["cart_data"] = cart_data
+                added = True
+                break
+        if not added:
+            request.session["cart_data"] += [(request.POST["food_id"], request.POST["food_name"], int(request.POST['food_quantity']), float(request.POST['food_price']))]
         messages.success(request, 'Item has been added to the cart.')
     return HttpResponseRedirect("/")
 
 # cart
 def cart(request):
-    user_name = request.session.get("user_name", "guest")
     if request.session.get("user_id") == None:
         messages.error(request, 'Please, login.')
         return HttpResponseRedirect("/")
     if request.session["cart_data"] == []:
         messages.error(request, "The cart is empty")
         return HttpResponseRedirect("/")
-    mockup = [(item[0], item[1], f"{item[2]}x{item[3]}", f"{int(item[2])*float(item[3])}฿") for item in request.session["cart_data"]]
+    mockup = [(item[0], item[1], f"{item[2]}x{item[3]}", f"{item[2]*item[3]}฿") for item in request.session["cart_data"]]
     total = sum(int(x[2])*float(x[3]) for x in request.session["cart_data"])
-    return render(request, "ordering/cart.html", {"data": mockup, "user": user_name, "total": total})
+    return render(request, "ordering/cart.html", {"data": mockup, "total": total})
 
 def clear_cart(request):
     request.session["cart_data"] = []
     return HttpResponseRedirect(reverse("ordering:cart"))
 
-def delete(request):
+def delete_item(request):
     if request.method == "POST":
         cart_data = request.session["cart_data"]
         for index, item in enumerate(cart_data):
@@ -49,7 +58,7 @@ def delete(request):
 
 def confirm_order(request):
     # Order_User table
-    total = sum(int(x[2])*float(x[3]) for x in request.session["cart_data"])
+    total = sum(x[2]*x[3] for x in request.session["cart_data"])
     user = User.objects.get(id=request.session["user_id"])
     entry = Order_User(order_id = d.now().strftime("%y%m%d%H%M%S"), user=user, date=d.now().strftime("%d-%m-%y"), total=total)
     entry.save()
@@ -65,10 +74,24 @@ def confirm_order(request):
 
 # orders page
 def orders(request):
-    user=User.objects.get(id=request.session["user_id"])
+    if request.session.get("user_id") == None:
+        messages.error(request, 'Please, login.')
+        return HttpResponseRedirect("/")
+    user = User.objects.get(id=request.session["user_id"])
     order_list = Order_User.objects.filter(user=user)
-    messages.success(request, [o.order_id for o in order_list])
-    return HttpResponseRedirect("/")
+    # use Order_User objects to search in order table
+    order_data = []
+    for order in order_list:
+        item_list = Order.objects.filter(order=order) # get specific rows that match the order_id
+        mockup = [(i.food.name, f"{i.quantity}x{i.food.price}", f"{int(i.quantity)*float(i.food.price)}฿") for i in item_list]
+        order_data += [(order.order_id, order.date, order.total, mockup)]
+    return render(request, "ordering/orders.html", {"data": order_data})
+
+def delete_order(request):
+    if request.method == "POST":
+        Order_User.objects.filter(order_id=request.POST["order_id"]).delete()
+        messages.success(request, "The order has been deleted.")
+    return HttpResponseRedirect(reverse("ordering:orders"))
 
 # login
 def login(request):
@@ -89,4 +112,3 @@ def logout(request):
     request.session.pop("user_id")
     request.session.pop("cart_data")
     return HttpResponseRedirect("/")
-
