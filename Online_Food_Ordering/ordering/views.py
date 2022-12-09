@@ -2,20 +2,31 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
-from .models import Food, User
+from .models import *
 
 food_data = Food.objects.all()
-
+# index
 def index(request):
-    user_data = request.session.get("user_data", "guest")
-    if "cart_data" not in request.session:
-        request.session["cart_data"] = []
-    return render(request, "ordering/index.html", {"data": food_data, "user": user_data})
+    user_name = request.session.get("user_name", "guest")
+    return render(request, "ordering/index.html", {"data": food_data, "user": user_name})
 
+def add(request):
+    # if request.session.get("user_id") == None:
+    #     messages.error(request, 'Please, login.')
+    #     return HttpResponseRedirect("/")
+    if request.method == "POST":
+        request.session["cart_data"] += [(request.POST["food_id"], request.POST["food_name"], request.POST['food_quantity'], request.POST['food_price'])]
+        messages.success(request, 'Item has been added to the cart.')
+    return HttpResponseRedirect("/")
+
+# cart
 def cart(request):
-    user_data = request.session.get("user_data", "guest")
+    user_name = request.session.get("user_name", "guest")
+    if request.session["cart_data"] == []:
+        messages.error(request, "The cart is empty")
+        return HttpResponseRedirect("/")
     mockup = [(item[0], item[1], f"{item[2]}x{item[3]}", f"{int(item[2])*float(item[3])}฿") for item in request.session["cart_data"]]
-    return render(request, "ordering/cart.html", {"data": mockup, "user": user_data})
+    return render(request, "ordering/cart.html", {"data": mockup, "user": user_name})
 
 def clear_cart(request):
     request.session["cart_data"] = []
@@ -31,17 +42,17 @@ def delete(request):
                 break
     return HttpResponseRedirect(reverse("ordering:cart"))
 
-def add(request):
-    if request.method == "POST":
-        request.session["cart_data"] += [(request.POST["food_id"], request.POST["food_name"], request.POST['food_quantity'], request.POST['food_price'])]
-        messages.success(request, 'Item has been added to the cart.')
-    return HttpResponseRedirect("/")
+def confirm_order(request):
+    pass
 
+# login
 def login(request):
     if request.method == "POST":
         try: 
             user_data = User.objects.get(username = request.POST["username"], password = request.POST["password"])
-            request.session["user_data"] = user_data.username
+            request.session["user_name"] = user_data.username
+            request.session["user_id"] = user_data.id
+            request.session["cart_data"] = []
             messages.success(request, "login สำเร็จ")
         except:
             messages.error(request, "login ไม่สำเร็จ")
@@ -49,6 +60,8 @@ def login(request):
     return render(request, "ordering/login.html")
 
 def logout(request):
-    request.session.pop("user_data")
+    request.session.pop("user_name")
+    request.session.pop("user_id")
+    request.session.pop("cart_data")
     return HttpResponseRedirect("/")
 
