@@ -9,5 +9,6 @@ urlpatterns = [
     path("logout", views.logout, name = "logout"),
     path("clear_cart", views.clear_cart, name = "clear_cart"),
     path("delete", views.delete, name = "delete"),
-    path("confirm_order", views.confirm_order, name = "confirm_order")
+    path("confirm_order", views.confirm_order, name = "confirm_order"),
+    path("orders", views.orders, name = "orders")
 ]

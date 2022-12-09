@@ -13,8 +13,8 @@
                 </li>
             {% endfor %}
         </ol>
+<p>total = {{total}}฿</p>
 <a href="{%url 'ordering:clear_cart'%}">clear cart</a>
-
 <p><form action="{%url 'ordering:confirm_order'%}" method="post">{%csrf_token%}
     <input type="submit" value="Confirm">
 </form></p>

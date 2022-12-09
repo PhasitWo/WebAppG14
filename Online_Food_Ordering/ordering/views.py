@@ -12,9 +12,9 @@ def index(request):
     return render(request, "ordering/index.html", {"data": food_data, "user": user_name})
 
 def add(request):
-    # if request.session.get("user_id") == None:
-    #     messages.error(request, 'Please, login.')
-    #     return HttpResponseRedirect("/")
+    if request.session.get("user_id") == None:
+        messages.error(request, 'Please, login.')
+        return HttpResponseRedirect("/")
     if request.method == "POST":
         request.session["cart_data"] += [(request.POST["food_id"], request.POST["food_name"], request.POST['food_quantity'], request.POST['food_price'])]
         messages.success(request, 'Item has been added to the cart.')
@@ -23,11 +23,15 @@ def add(request):
 # cart
 def cart(request):
     user_name = request.session.get("user_name", "guest")
+    if request.session.get("user_id") == None:
+        messages.error(request, 'Please, login.')
+        return HttpResponseRedirect("/")
     if request.session["cart_data"] == []:
         messages.error(request, "The cart is empty")
         return HttpResponseRedirect("/")
     mockup = [(item[0], item[1], f"{item[2]}x{item[3]}", f"{int(item[2])*float(item[3])}฿") for item in request.session["cart_data"]]
-    return render(request, "ordering/cart.html", {"data": mockup, "user": user_name})
+    total = sum(int(x[2])*float(x[3]) for x in request.session["cart_data"])
+    return render(request, "ordering/cart.html", {"data": mockup, "user": user_name, "total": total})
 
 def clear_cart(request):
     request.session["cart_data"] = []
@@ -45,15 +49,25 @@ def delete(request):
 
 def confirm_order(request):
     # Order_User table
-    entry = Order_User(order_id = d.now().strftime("%y%m%d%H%M%S"), user=User.objects.get(id=request.session["user_id"]))
+    total = sum(int(x[2])*float(x[3]) for x in request.session["cart_data"])
+    user = User.objects.get(id=request.session["user_id"])
+    entry = Order_User(order_id = d.now().strftime("%y%m%d%H%M%S"), user=user, date=d.now().strftime("%d-%m-%y"), total=total)
     entry.save()
     # Order table
     for item in request.session["cart_data"]:
         food = Food.objects.get(id=item[0])
         quantity = item[2]
-        order = Order(order=entry, date=d.now().strftime("%d-%m-%y"), food=food, quantity=quantity)
+        order = Order(order=entry, food=food, quantity=quantity)
         order.save()
     request.session["cart_data"] = []
+    messages.success(request,"Confirmed!")
+    return HttpResponseRedirect("/")
+
+# orders page
+def orders(request):
+    user=User.objects.get(id=request.session["user_id"])
+    order_list = Order_User.objects.filter(user=user)
+    messages.success(request, [o.order_id for o in order_list])
     return HttpResponseRedirect("/")
 
 # login
