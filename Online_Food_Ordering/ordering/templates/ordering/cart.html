@@ -5,7 +5,13 @@
     <h1> Cart </h1>
         <ol>
             {% for item in data %}
-                <li>{{item}} <a href="{%url 'ordering:index'%}">test_delete</a></li>
+                <li>{{item.1}} {{item.2}} {{item.3}} 
+                    <form action="{%url 'ordering:delete'%}" method="post"  style="display: inline;">{%csrf_token%}
+                        <input type="hidden" name="food_id" value="{{item.0}}">
+                        <input type="submit" value="delete">
+                    </form>
+                </li>
             {% endfor %}
         </ol>
+<a href="{%url 'ordering:clear_cart'%}">clear cart</a>
 {% endblock %}

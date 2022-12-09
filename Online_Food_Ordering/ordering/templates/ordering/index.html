@@ -19,10 +19,11 @@
                     <td class="form-col">
                         <form action="{%url 'ordering:add'%}" method="post">
                             {%csrf_token%}
+                            <input type="hidden" name="food_id" value="{{food.id}}">
                             <input type="hidden" name="food_name" value="{{food.name}}">
                             <input type="hidden" name="food_img" value="{{food.image}}">
                             <input type="hidden" name="food_price" value="{{food.price}}">
-                            <input type="number" name="food_quantity" min="1" required="required" placeholder="quantity">
+                            <input type="number" name="food_quantity" min="1" placeholder="quantity" required>
                             <input type="submit" value="add">
                         </form>
                     </td>
