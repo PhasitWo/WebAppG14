@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 from .models import *
+from datetime import datetime as d
 
 food_data = Food.objects.all()
 # index
@@ -43,7 +44,17 @@ def delete(request):
     return HttpResponseRedirect(reverse("ordering:cart"))
 
 def confirm_order(request):
-    pass
+    # Order_User table
+    entry = Order_User(order_id = d.now().strftime("%y%m%d%H%M%S"), user=User.objects.get(id=request.session["user_id"]))
+    entry.save()
+    # Order table
+    for item in request.session["cart_data"]:
+        food = Food.objects.get(id=item[0])
+        quantity = item[2]
+        order = Order(order=entry, date=d.now().strftime("%d-%m-%y"), food=food, quantity=quantity)
+        order.save()
+    request.session["cart_data"] = []
+    return HttpResponseRedirect("/")
 
 # login
 def login(request):

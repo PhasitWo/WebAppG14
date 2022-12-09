@@ -15,13 +15,19 @@ class User(models.Model):
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=64)
     password = models.CharField(max_length=64)
+    def __str__(self):
+        return f"{self.id}-{self.username}"
 
 class Order_User(models.Model):
     order_id = models.IntegerField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.order_id}-{self.user}"
 
 class Order(models.Model):
     order = models.ForeignKey(Order_User, on_delete=models.CASCADE)
     date = models.CharField(max_length=10)
     food = models.ForeignKey(Food , on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    def __str__(self):
+        return f"{self.order}--{self.food}--{self.quantity}"
