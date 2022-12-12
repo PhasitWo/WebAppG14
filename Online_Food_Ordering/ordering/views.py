@@ -40,7 +40,8 @@ def cart(request):
         return HttpResponseRedirect("/")
     mockup = [(item[0], item[1], f"{item[2]}x{item[3]}", f"{item[2]*item[3]}฿") for item in request.session["cart_data"]]
     total = sum(int(x[2])*float(x[3]) for x in request.session["cart_data"])
-    return render(request, "ordering/cart.html", {"data": mockup, "total": total})
+    user_name = request.session.get("user_name", "guest")
+    return render(request, "ordering/cart.html", {"data": mockup, "total": total, "user":user_name})
 
 def clear_cart(request):
     request.session["cart_data"] = []
@@ -85,7 +86,8 @@ def orders(request):
         item_list = Order.objects.filter(order=order) # get specific rows that match the order_id
         mockup = [(i.food.name, f"{i.quantity}x{i.food.price}", f"{int(i.quantity)*float(i.food.price)}฿") for i in item_list]
         order_data += [(order.order_id, order.date, order.total, mockup)]
-    return render(request, "ordering/orders.html", {"data": order_data})
+    user_name = request.session.get("user_name", "guest")
+    return render(request, "ordering/orders.html", {"data": order_data, "user":user_name})
 
 def delete_order(request):
     if request.method == "POST":
