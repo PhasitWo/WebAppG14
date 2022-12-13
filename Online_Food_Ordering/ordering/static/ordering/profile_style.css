@@ -1,0 +1,11 @@
+.profile-content {
+    text-align: center;
+    width: 400px;
+    margin: 200px auto;
+    padding: 10rem;
+    background-color: aliceblue;
+}
+
+#username {
+    background-color: rgb(230, 230, 230); 
+}

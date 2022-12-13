@@ -13,7 +13,7 @@
     {% endif %}
     <div class="container">
         <div class="header">
-            <h1>{{user}}</h1>
+            <h1><a id = "profile" href="{%url 'ordering:profile'%}">{{user}}</a></h1>
             {% if user != "guest" %}
                 <a id="logout" href="/ordering/logout">logout</a>
             {% else %}

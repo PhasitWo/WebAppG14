@@ -131,3 +131,20 @@ def register(request):
                 messages.success(request,"สมัครสำเร็จ")
         return HttpResponseRedirect("/")
     return render(request, "ordering/register.html")
+
+# profile
+def profile(request):
+    if request.session.get("user_id") == None:
+        messages.error(request, 'Please, login.')
+        return HttpResponseRedirect("/")
+    if request.method == "POST":
+        if request.POST["new-password"] == request.POST["confirm-password"]:
+            user = User.objects.get(id=request.session["user_id"])
+            user.password = request.POST["new-password"]
+            user.save()
+            messages.success(request, "You have changed your password.")
+        else:
+            messages.error(request, "Something went wrong.")
+        return HttpResponseRedirect("/")
+    user_name = request.session.get("user_name", "guest")
+    return render(request, "ordering/profile.html", {"user":user_name})
